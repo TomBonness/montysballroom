@@ -71,6 +71,10 @@ export function MontyHallPage() {
   // Ref lines Y coords
   const y33 = paddingTop + graphHeight - 0.333 * graphHeight;
   const y66 = paddingTop + graphHeight - 0.667 * graphHeight;
+  const lastSnapshot = hasSnapshots ? stats.snapshots[stats.snapshots.length - 1] : null;
+  const lastX = chartWidth - paddingRight;
+  const switchEndY = lastSnapshot ? paddingTop + graphHeight - lastSnapshot.switchRate * graphHeight : 0;
+  const stayEndY = lastSnapshot ? paddingTop + graphHeight - lastSnapshot.stayRate * graphHeight : 0;
 
   return (
     <div className="container">
@@ -94,6 +98,10 @@ export function MontyHallPage() {
           <h2 className="section-title">The Game</h2>
           
           <div className="doors-container">
+            <div className="game-stage-header">
+              <span className="game-stage-kicker">CHOOSE // REVEAL // DECIDE</span>
+              <p>Pick a door, let Monty clear a goat, then decide whether the math says to move.</p>
+            </div>
             <div className="doors-grid">
               {DOORS.map((doorIndex) => {
                 const isInitial = doorIndex === initialDoor;
@@ -155,7 +163,9 @@ export function MontyHallPage() {
                     className={btnClass}
                     aria-label={label}
                   >
+                    <span className="door-top-rail" aria-hidden="true"></span>
                     <span className="door-number">{doorIndex + 1}</span>
+                    <span className="door-knob" aria-hidden="true"></span>
                     {statusText && <span className="door-status">{statusText}</span>}
                   </button>
                 );
@@ -251,6 +261,18 @@ export function MontyHallPage() {
             <h3 className="chart-title">Probability Convergence</h3>
             {hasSnapshots ? (
               <svg className="convergence-chart" viewBox={`0 0 ${chartWidth} ${chartHeight}`}>
+                <defs>
+                  <pattern id="chart-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+                    <path d="M 24 0 L 0 0 0 24" fill="none" stroke="var(--line)" strokeWidth="0.5" opacity="0.45" />
+                  </pattern>
+                </defs>
+                <rect
+                  x={paddingLeft}
+                  y={paddingTop}
+                  width={graphWidth}
+                  height={graphHeight}
+                  fill="url(#chart-grid)"
+                />
                 {/* Horizontal reference lines */}
                 <line
                   x1={paddingLeft}
@@ -328,16 +350,26 @@ export function MontyHallPage() {
                 <path
                   d={switchPath}
                   fill="none"
-                  stroke="var(--switch)"
-                  strokeWidth="2"
+                  stroke="var(--ink)"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 />
                 <path
                   d={stayPath}
                   fill="none"
-                  stroke="var(--prize)"
-                  strokeWidth="2"
+                  stroke="var(--muted)"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   strokeDasharray="4,4"
                 />
+                {lastSnapshot && (
+                  <>
+                    <circle cx={lastX} cy={switchEndY} r="4" fill="var(--ink)" />
+                    <circle cx={lastX} cy={stayEndY} r="4" fill="var(--bg)" stroke="var(--muted)" strokeWidth="2" />
+                  </>
+                )}
               </svg>
             ) : (
               <div className="empty-chart">

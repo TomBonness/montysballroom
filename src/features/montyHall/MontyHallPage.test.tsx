@@ -121,4 +121,14 @@ describe('MontyHallPage UI states', () => {
       screen.getByText(/EXPERIMENT NOTE \/\/ SWITCHING WINS BY COLLECTING EVERY DOOR MONTY PROVED EMPTY/)
     ).toBeDefined();
   });
+
+  test('renders the redesigned door stage markup', () => {
+    mockUseMontyHallGame.mockReturnValue(makeGameState({ phase: 'idle' }));
+    const { container } = render(<MontyHallPage />);
+
+    expect(screen.getByText('CHOOSE // REVEAL // DECIDE')).toBeDefined();
+    expect(screen.getByText(/Pick a door, let Monty clear a goat/)).toBeDefined();
+    expect(container.querySelectorAll('.door-knob').length).toBe(3);
+    expect(screen.getByRole('button', { name: 'Choose door 1' }).className.includes('door-idle')).toBe(true);
+  });
 });
