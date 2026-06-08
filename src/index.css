@@ -1,11 +1,18 @@
 :root {
-  --bg: #f6f4ef;
+  --bg: #f4f4f0;
   --ink: #111111;
-  --muted: #77736b;
-  --line: #d7d2c8;
-  --accent: #ff4b2f;
-  --accent-light: #fff2f0;
-  
+  --muted: #6f6a61;
+  --line: #d8d1c4;
+  --accent: #d81e05;
+  --accent-light: #fff1ed;
+  --win: #16803d;
+  --win-light: #ecfdf3;
+  --prize: #d97706;
+  --prize-light: #fffbeb;
+  --switch: #2563eb;
+  --switch-light: #eff6ff;
+  --shadow: #111111;
+
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
 }
 
@@ -16,7 +23,7 @@
 }
 
 body {
-  background-color: var(--bg);
+  background: radial-gradient(circle at top left, rgba(216, 30, 5, 0.08), transparent 30rem), var(--bg);
   color: var(--ink);
   font-family: var(--font-sans);
   font-size: 16px;
@@ -24,6 +31,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding: 40px 20px;
+}
+
+::selection {
+  background: var(--accent);
+  color: #ffffff;
 }
 
 .container {
@@ -44,7 +56,7 @@ body {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: var(--muted);
+  color: var(--accent);
   margin-bottom: 10px;
 }
 
@@ -100,9 +112,10 @@ h1 {
 
 /* Game Section */
 .doors-container {
-  background: #ffffff;
+  background: #fffdf8;
   border: 1px solid var(--line);
   padding: 40px;
+  box-shadow: 6px 6px 0 var(--shadow);
 }
 
 .doors-grid {
@@ -124,7 +137,7 @@ h1 {
   cursor: pointer;
   font-family: inherit;
   position: relative;
-  transition: all 0.2s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
   min-height: 180px;
 }
 
@@ -134,7 +147,9 @@ h1 {
 }
 
 .door-idle:hover {
-  background: #fbfbf9;
+  background: var(--switch-light);
+  border-color: var(--switch);
+  transform: translate(-2px, -2px);
 }
 
 .door-number {
@@ -155,8 +170,8 @@ h1 {
 
 /* Door States */
 .door-initial {
-  background: #f0ede6;
-  border: 3px solid var(--ink);
+  background: var(--switch-light);
+  border: 3px solid var(--switch);
 }
 
 .door-revealed {
@@ -166,20 +181,21 @@ h1 {
 }
 
 .door-remaining {
-  border: 2px solid var(--ink);
+  border: 2px solid var(--switch);
+  box-shadow: inset 0 0 0 3px var(--switch-light);
 }
 
 .door-prize {
-  border: 3px solid var(--accent);
-  background: var(--accent-light);
+  border: 3px solid var(--prize);
+  background: var(--prize-light);
 }
 
 .door-prize .door-number {
-  color: var(--accent);
+  color: var(--prize);
 }
 
 .door-prize .door-status {
-  color: var(--accent);
+  color: var(--prize);
 }
 
 .door-goat {
@@ -193,7 +209,25 @@ h1 {
 }
 
 .door-final.door-won {
+  border-color: var(--win);
+  box-shadow: inset 0 0 0 4px var(--win);
+  background: var(--win-light);
+}
+
+.door-final.door-won .door-number,
+.door-final.door-won .door-status {
+  color: var(--win);
+}
+
+.door-final.door-lost {
+  border-color: var(--accent);
   box-shadow: inset 0 0 0 4px var(--accent);
+  background: var(--accent-light);
+}
+
+.door-final.door-lost .door-number,
+.door-final.door-lost .door-status {
+  color: var(--accent);
 }
 
 /* Revealed / Stay-Switch container */
@@ -202,6 +236,14 @@ h1 {
   border-top: 1px solid var(--line);
   padding-top: 30px;
   margin-top: 30px;
+}
+
+.result-container-win {
+  border-top-color: var(--win);
+}
+
+.result-container-loss {
+  border-top-color: var(--accent);
 }
 
 .instruction-box {
@@ -234,7 +276,7 @@ h1 {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
 }
 
 .action-btn:hover {
@@ -264,13 +306,42 @@ h1 {
   background: var(--bg);
 }
 
+.switch-btn {
+  background: var(--switch);
+  border-color: var(--switch);
+  color: #ffffff;
+}
+
+.switch-btn:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+.play-again-btn {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: #ffffff;
+}
+
+.play-again-btn:hover {
+  background: #333333;
+  border-color: #333333;
+}
+
 /* Results */
 .result-heading {
   font-size: 2rem;
   font-weight: 800;
   text-transform: uppercase;
-  color: var(--accent);
   margin-bottom: 10px;
+}
+
+.result-heading.result-win {
+  color: var(--win);
+}
+
+.result-heading.result-loss {
+  color: var(--accent);
 }
 
 .result-strategy {
@@ -287,6 +358,16 @@ h1 {
   color: #444;
 }
 
+.result-container-win .educational-nudge {
+  border-left-color: var(--win);
+  background: var(--win-light);
+}
+
+.result-container-loss .educational-nudge {
+  border-left-color: var(--accent);
+  background: var(--accent-light);
+}
+
 /* Dashboard Section */
 .stats-grid {
   display: grid;
@@ -296,11 +377,24 @@ h1 {
 }
 
 .stat-card {
-  background: #ffffff;
+  background: #fffdf8;
   border: 1px solid var(--line);
   padding: 20px;
+  box-shadow: 4px 4px 0 var(--shadow);
   display: flex;
   flex-direction: column;
+}
+
+.stat-card,
+.convergence-chart path {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.stat-label,
+.chart-title,
+.explanation-kicker {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  letter-spacing: 0.12em;
 }
 
 .stat-label {
@@ -325,9 +419,10 @@ h1 {
 
 /* Chart */
 .chart-container {
-  background: #ffffff;
+  background: #fffdf8;
   border: 1px solid var(--line);
   padding: 25px;
+  box-shadow: 6px 6px 0 var(--shadow);
 }
 
 .chart-title {
@@ -372,11 +467,11 @@ h1 {
 }
 
 .legend-switch {
-  background: var(--ink);
+  background: var(--switch);
 }
 
 .legend-stay {
-  border-top: 2px dashed var(--muted);
+  border-top: 2px dashed var(--prize);
 }
 
 /* Footer & Explanation */
@@ -406,38 +501,110 @@ h1 {
 
 .explanation-panel {
   margin-top: 30px;
-  background: #ffffff;
-  border: 1px solid var(--line);
-  padding: 40px;
+  background: #fffdf8;
+  border: 1px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--shadow);
   display: grid;
   grid-template-columns: 1fr;
-  gap: 40px;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  animation: explanation-rise 240ms ease-out both;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 900px) {
   .explanation-panel {
-    grid-template-columns: 1.2fr 0.8fr;
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
-.explanation-text h3 {
-  font-size: 1.5rem;
+.explanation-card {
+  padding: 28px;
+  border-bottom: 1px solid var(--ink);
+  animation: explanation-card-rise 360ms ease-out both;
+  display: flex;
+  flex-direction: column;
+}
+
+.explanation-card:nth-child(2) {
+  animation-delay: 80ms;
+}
+
+.explanation-card:nth-child(3) {
+  animation-delay: 160ms;
+}
+
+@media (min-width: 900px) {
+  .explanation-card {
+    border-bottom: none;
+    border-right: 1px solid var(--ink);
+  }
+  .explanation-card:nth-child(3) {
+    border-right: none;
+  }
+}
+
+.explanation-kicker {
+  display: block;
+  font-size: 0.75rem;
   font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.explanation-card h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
   text-transform: uppercase;
-  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 16px;
+  color: var(--ink);
 }
 
-.explanation-text p {
-  font-size: 1rem;
-  margin-bottom: 15px;
-  color: #333333;
+.explanation-card p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--muted);
+  margin-bottom: 16px;
 }
 
-.explanation-graphic h4 {
+/* probability transfer callout block */
+.probability-transfer {
+  background: var(--ink);
+  color: #ffffff;
+  padding: 16px;
+  box-shadow: 4px 4px 0 var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  border: 1px solid var(--ink);
+}
+
+.probability-pill {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #a3a3a3;
+}
+
+.probability-pill strong {
   font-size: 1.1rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  margin-bottom: 20px;
+  color: #ffffff;
+  margin-top: 4px;
+}
+
+.probability-pill-strong strong {
+  color: var(--win);
+}
+
+.probability-arrow {
+  font-size: 1.5rem;
+  color: var(--accent);
+  font-weight: bold;
 }
 
 /* 20 mini doors */
@@ -455,13 +622,13 @@ h1 {
 }
 
 .mini-door-chosen {
-  background: #e6e4de;
-  border: 2px solid var(--ink);
+  background: var(--switch-light);
+  border: 2px solid var(--switch);
 }
 
 .mini-door-remaining {
-  background: var(--accent-light);
-  border: 2px solid var(--accent);
+  background: var(--win-light);
+  border: 2px solid var(--win);
 }
 
 .mini-door-opened {
@@ -490,4 +657,78 @@ h1 {
   vertical-align: middle;
   margin-right: 6px;
   border: 1px solid var(--ink);
+}
+
+/* explanation footer */
+.explanation-footer {
+  grid-column: 1 / -1;
+  border-top: 1px solid var(--ink);
+  background: var(--ink);
+  color: #ffffff;
+  padding: 12px 28px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Keyframes and Animations */
+@keyframes explanation-rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes explanation-card-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes mini-door-open {
+  from {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+  to {
+    opacity: 0.28;
+    transform: scaleY(0.82);
+  }
+}
+
+@keyframes remaining-pulse {
+  from {
+    box-shadow: 0 0 0 0 rgba(22, 128, 61, 0.35);
+  }
+  to {
+    box-shadow: 0 0 0 8px rgba(22, 128, 61, 0);
+  }
+}
+
+.explanation-animated-grid .mini-door-opened {
+  animation: mini-door-open 600ms ease-out both;
+}
+
+.explanation-animated-grid .mini-door-remaining {
+  animation: remaining-pulse 1200ms ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
 }

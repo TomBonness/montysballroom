@@ -387,7 +387,7 @@ export async function handler(event: APIGatewayProxyEventV2): Promise<APIGateway
           TableName: tableName,
           Item: snapshotItem
         }));
-      } catch (err) {
+      } catch {
         try {
           await docClient.send(new PutCommand({
             TableName: tableName,

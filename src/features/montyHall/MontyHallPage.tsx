@@ -192,8 +192,11 @@ export function MontyHallPage() {
             )}
 
             {phase === 'finished' && (
-              <div className="result-container" aria-live="polite">
-                <h3 className="result-heading">
+              <div
+                className={`result-container ${won ? 'result-container-win' : 'result-container-loss'}`}
+                aria-live="polite"
+              >
+                <h3 className={`result-heading ${won ? 'result-win' : 'result-loss'}`}>
                   {won ? 'You won!' : 'You lost.'}
                 </h3>
                 <p className="result-strategy">
@@ -325,13 +328,13 @@ export function MontyHallPage() {
                 <path
                   d={switchPath}
                   fill="none"
-                  stroke="var(--ink)"
+                  stroke="var(--switch)"
                   strokeWidth="2"
                 />
                 <path
                   d={stayPath}
                   fill="none"
-                  stroke="var(--muted)"
+                  stroke="var(--prize)"
                   strokeWidth="2"
                   strokeDasharray="4,4"
                 />
@@ -365,50 +368,67 @@ export function MontyHallPage() {
         </button>
 
         {explainOpen && (
-          <div className="explanation-panel">
-            <div className="explanation-text">
-              <h3>The 1,000-Door Intuition</h3>
+          <div className="explanation-panel" aria-label="Monty Hall probability explanation">
+            <article className="explanation-card">
+              <span className="explanation-kicker">01 // THE SETUP</span>
+              <h3>Your first pick stays small</h3>
               <p>
-                Imagine 1,000 doors. You pick 1. The chance that you picked the prize is exactly
-                1/1000. That means there is a 999/1000 chance the prize is behind one of the other
-                999 doors.
+                Imagine 1,000 doors. You choose one. That door has a 1/1000 chance of hiding the prize, and the other 999 doors collectively hold the remaining 999/1000 chance.
               </p>
+            </article>
+
+            <article className="explanation-card">
+              <span className="explanation-kicker">02 // THE ELIMINATION</span>
+              <h3>Monty removes only goats</h3>
               <p>
-                Monty Hall then opens 998 goat doors, leaving only your chosen door and one remaining
-                closed door.
+                Monty does not open doors at random. He opens 998 doors he knows are goats, so the probability on your first pick does not move. The unchosen, unopened door inherits the whole skipped group.
               </p>
-              <p>
-                The door you chose still has its original 1/1000 chance. The remaining unopened door
-                now carries the full 999/1000 probability from the 999 doors you skipped. Switching
-                is not a 50/50 choice—it captures the concentrated probability of all the doors Monty
-                eliminated.
-              </p>
-            </div>
-            <div className="explanation-graphic">
-              <h4>Visualizing the Eliminator</h4>
-              <div className="mini-doors-grid">
+              <div className="probability-transfer" aria-hidden="true">
+                <span className="probability-pill">
+                  Your door
+                  <strong>1/1000</strong>
+                </span>
+                <span className="probability-arrow">→</span>
+                <span className="probability-pill probability-pill-strong">
+                  Switch door
+                  <strong>999/1000</strong>
+                </span>
+              </div>
+            </article>
+
+            <article className="explanation-card explanation-card-visual">
+              <span className="explanation-kicker">03 // THE VISUAL</span>
+              <h3>Probability transfer</h3>
+              <div
+                className="mini-doors-grid explanation-animated-grid"
+                aria-label="20-door visualization: one chosen door, eighteen opened goat doors, and one remaining switch door"
+              >
                 {miniDoors.map((d) => (
                   <div
                     key={d.index}
                     className={`mini-door mini-door-${d.state}`}
                     title={`Door ${d.index + 1}: ${d.state}`}
-                  ></div>
+                  />
                 ))}
               </div>
               <p className="graphic-caption">
-                A 20-door visualization of the 1,000-door intuition.
+                Scaled to 20 doors: your pick keeps 1/20, while the last closed door carries 19/20 after Monty clears the goats.
               </p>
               <div className="graphic-legend">
                 <span className="legend-item">
-                  <span className="legend-box mini-door-chosen"></span> Chosen (1/20)
+                  <span className="legend-box mini-door-chosen"></span> Chosen
                 </span>
                 <span className="legend-item">
-                  <span className="legend-box mini-door-remaining"></span> Remaining (19/20)
+                  <span className="legend-box mini-door-remaining"></span> Switch Door
                 </span>
                 <span className="legend-item">
                   <span className="legend-box mini-door-opened"></span> Opened Goat
                 </span>
               </div>
+            </article>
+
+            <div className="explanation-footer">
+              EXPERIMENT NOTE // SWITCHING WINS BY COLLECTING EVERY DOOR MONTY PROVED EMPTY
             </div>
           </div>
         )}
