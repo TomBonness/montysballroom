@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useMontyHallGame } from './useMontyHallGame';
 import { getSwitchDoor, formatRate, buildTwentyDoorExplanation, DOORS } from './gameLogic';
 
@@ -19,16 +18,12 @@ export function MontyHallPage() {
     resetRound,
   } = useMontyHallGame();
 
-  const [explainOpen, setExplainOpen] = useState(false);
 
   const switchDoor =
     initialDoor !== null && revealedDoor !== null
       ? getSwitchDoor(initialDoor, revealedDoor)
       : null;
 
-  const handleToggleExplain = () => {
-    setExplainOpen((prev) => !prev);
-  };
 
   const miniDoors = buildTwentyDoorExplanation(0);
 
@@ -79,8 +74,8 @@ export function MontyHallPage() {
   return (
     <div className="container">
       <header className="page-header">
-        <span className="kicker">Bayes / Live Crowd Experiment</span>
-        <h1>Monty Hall</h1>
+        <span className="kicker">EXPERIMENT NO. 2</span>
+        <h1>The Monty Hall Problem</h1>
         <p className="intro-text">
           Pick one of three doors. Monty will reveal a goat behind one of the remaining doors.
           Then choose whether to stay with your original choice, or switch to the other closed door.
@@ -391,15 +386,8 @@ export function MontyHallPage() {
       </div>
 
       <footer className="page-footer">
-        <button
-          onClick={handleToggleExplain}
-          className="explain-toggle-btn"
-          aria-expanded={explainOpen}
-        >
-          {explainOpen ? 'Hide explanation' : 'Explain this to me'}
-        </button>
+        <h2 className="section-title">Explanation</h2>
 
-        {explainOpen && (
           <div className="explanation-panel" aria-label="Monty Hall probability explanation">
             <article className="explanation-card">
               <span className="explanation-kicker">01 // THE SETUP</span>
@@ -463,7 +451,6 @@ export function MontyHallPage() {
               EXPERIMENT NOTE // SWITCHING WINS BY COLLECTING EVERY DOOR MONTY PROVED EMPTY
             </div>
           </div>
-        )}
       </footer>
     </div>
   );

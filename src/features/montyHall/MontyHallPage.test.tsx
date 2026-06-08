@@ -1,6 +1,5 @@
 // @vitest-environment jsdom
 import { render, screen, cleanup } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { type Mock, beforeEach, afterEach, describe, expect, test, vi } from 'vitest';
 import MontyHallPage from './MontyHallPage';
 import type { DoorIndex, GamePhase, StatsResponse, Strategy } from './types';
@@ -107,12 +106,14 @@ describe('MontyHallPage UI states', () => {
     expect(screen.queryByText('You won!')).toBeNull();
   });
 
-  test('opens the redesigned explanation panel', async () => {
+  test('renders the updated page title and always-visible explanation', () => {
     render(<MontyHallPage />);
 
-    const button = screen.getByRole('button', { name: /explain this to me/i });
-    await userEvent.click(button);
-
+    expect(screen.getByText('EXPERIMENT NO. 2')).toBeDefined();
+    expect(screen.getByRole('heading', { name: 'The Monty Hall Problem', level: 1 })).toBeDefined();
+    expect(screen.getByRole('heading', { name: 'Explanation', level: 2 })).toBeDefined();
+    expect(screen.queryByRole('button', { name: /explain this to me/i })).toBeNull();
+    expect(screen.queryByRole('button', { name: /hide explanation/i })).toBeNull();
     expect(screen.getByText('01 // THE SETUP')).toBeDefined();
     expect(screen.getByText('02 // THE ELIMINATION')).toBeDefined();
     expect(screen.getByText('03 // THE VISUAL')).toBeDefined();

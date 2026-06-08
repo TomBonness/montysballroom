@@ -575,24 +575,6 @@ h1 {
   margin-top: 80px;
 }
 
-.explain-toggle-btn {
-  background: none;
-  border: 1px solid var(--ink);
-  padding: 10px 20px;
-  font-family: inherit;
-  font-size: 0.85rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.explain-toggle-btn:hover {
-  background: var(--ink);
-  color: #ffffff;
-}
-
 .explanation-panel {
   margin-top: 30px;
   background: #fffdf8;
